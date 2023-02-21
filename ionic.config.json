@@ -1,0 +1,7 @@
+{
+  "name": "Budget UI",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
