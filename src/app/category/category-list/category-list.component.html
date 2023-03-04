@@ -1,1 +1,42 @@
-Hello new World
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Categories</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+          <ion-item>
+            <ion-icon name="swap-vertical" slot="start"></ion-icon>
+            <ion-select interface="popover">
+              <ion-select-option value="Created at (newest first)">Created at (newest first)</ion-select-option>
+              <ion-select-option value="Created at (oldest first)">Created at (oldest first)</ion-select-option>
+              <ion-select-option value="Date (newest first)">Date (newest first)</ion-select-option>
+              <ion-select-option value="Date (oldest first)">Date (oldest first)</ion-select-option>
+              <ion-select-option value="Name (A-Z)">Name (A-Z)</ion-select-option>
+              <ion-select-option value="Name (Z-A)">Name (Z-A)</ion-select-option>
+            </ion-select>
+          </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-icon name="search" slot="start"></ion-icon>
+          <ion-label>Search</ion-label>
+          <ion-input></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label></ion-label>
+    </ion-list-header>
+    <ion-item button detail="true" (click)="openModal()">
+      <ion-label>Test_1</ion-label>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
+
