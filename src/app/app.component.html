@@ -23,17 +23,17 @@
           </ion-menu-toggle>
         </ion-list>
       </ion-content>
+      <ion-footer>
+        <ion-toolbar>
+          <ion-buttons>
+            <ion-button *ngIf="authService.currentUser() | async" (click)="authService.logout()" color="primary">
+              <ion-icon class="ion-padding-end" name="log-out"></ion-icon>
+              Logout
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-footer>
     </ion-menu>
-    <ion-footer>
-      <ion-toolbar>
-        <ion-buttons>
-          <ion-button *ngIf="authService.currentUser() | async" (click)="authService.logout()" color="primary">
-            <ion-icon class="ion-padding-end" name="log-out"></ion-icon>
-            Logout
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-footer>
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-split-pane>
 </ion-app>
