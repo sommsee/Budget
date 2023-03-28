@@ -47,9 +47,7 @@
 
   <!-- Category list -->
   <ion-list inset="true">
-
-    <!-- Categories -->
-    <ion-item button="true" [detail]="true" (click)="openModal()">
+     <ion-item button="true" [detail]="true" (click)="openModal()">
       <ion-label>
         <ion-grid>
           <ion-row>
@@ -60,9 +58,7 @@
         </ion-grid>
       </ion-label>
     </ion-item>
-
   </ion-list>
-
 
   <!-- Create fab button -->
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
@@ -71,17 +67,22 @@
     </ion-fab-button>
   </ion-fab>
 </ion-content>
+<!-- Footer with date/month -->
 <ion-footer>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button>
-        <ion-item name="arrow-back-outline"></ion-item>
+    <ion-buttons slot='start'>
+      <ion-button (click)='addMonths(-1)'>
+        <ion-icon slot='icon-only' name='arrow-back'>
+        </ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Marz</ion-title>
-    <ion-buttons slot="end">
-      <ion-button>
-        <ion-item name="arrow-forward-outline"></ion-item>
+    <ion-title>
+      {{date | date:'MMMM yyyy'}}
+    </ion-title>
+    <ion-buttons slot='end'>
+      <ion-button (click)='addMonths(1)'>
+        <ion-icon slot='icon-only' name='arrow-forward'>
+        </ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
