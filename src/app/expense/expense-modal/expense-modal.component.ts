@@ -9,6 +9,8 @@ import { ActionSheetService } from '../../shared/service/action-sheet.service';
   templateUrl: './expense-modal.component.html',
 })
 export class ExpenseModalComponent {
+  submitting: any;
+  categoryForm: any | Event;
   constructor(private readonly actionSheetService: ActionSheetService, private readonly modalCtrl: ModalController) {}
 
   cancel(): void {
