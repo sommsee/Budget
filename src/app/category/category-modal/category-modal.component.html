@@ -10,7 +10,7 @@
         Cancel
       </ion-button>
     </ion-buttons>
-    <ion-title>Add category</ion-title>
+    <ion-title>{{category.id ? 'Edit' : 'Add'}} category</ion-title>
     <ion-buttons slot="end">
        <ion-button (click)="save()" [disabled]="categoryForm.pristine || categoryForm.invalid || submitting">
         <ion-icon slot="end" name="save"></ion-icon>
@@ -29,8 +29,8 @@
     <ion-input maxlength="40" placeholder="Enter the category's name" required formControlName="name"
                [disabled]="submitting"></ion-input>
   </ion-item>
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button (click)="delete()" color="danger">
+  <ion-fab *ngIf="category.id" slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="delete()" color="danger" [disabled]="submitting">
       <ion-icon name="trash"></ion-icon>
     </ion-fab-button>
   </ion-fab>

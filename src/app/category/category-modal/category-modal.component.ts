@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ActionSheetService } from '../../shared/service/action-sheet.service';
-import { filter, from } from 'rxjs';
+import {filter, from, mergeMap} from 'rxjs';
 import {Category} from "../../shared/domain";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CategoryService} from "../category.service";
@@ -25,6 +25,7 @@ export class CategoryModalComponent {
     private readonly toastService: ToastService
   ) {
     this.categoryForm = this.formBuilder.group({
+      id: [], // hidden
       name: ['', [Validators.required, Validators.maxLength(40)]],
     });
   }
@@ -34,10 +35,22 @@ export class CategoryModalComponent {
   }
   delete(): void {
     from(this.actionSheetService.showDeletionConfirmation('Are you sure you want to delete this category?'))
-      .pipe(filter((action) => action === 'delete'))
+      .pipe(
+        filter((action) => action === 'delete'),
+        mergeMap(() => {
+          this.submitting = true;
+          return this.categoryService.deleteCategory(this.category.id!);
+        })
+      )
       .subscribe({
         next: () => {
-          this.modalCtrl.dismiss(null, 'delete');
+          this.toastService.displaySuccessToast('Category deleted');
+          this.modalCtrl.dismiss(null, 'refresh');
+          this.submitting = false;
+        },
+        error: (error) => {
+          this.toastService.displayErrorToast('Could not delete category', error);
+          this.submitting = false;
         },
       });
   }
