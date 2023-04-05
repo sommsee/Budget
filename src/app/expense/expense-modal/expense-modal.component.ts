@@ -36,6 +36,8 @@ export class ExpenseModalComponent implements OnInit{
     this.expenseForm = this.formBuilder.group({
       id: [], // hidden
       name: ['', [Validators.required, Validators.maxLength(40)]],
+      amount: [],
+      date: [formatISO(new Date())],
     });
   }
 
@@ -70,11 +72,13 @@ export class ExpenseModalComponent implements OnInit{
 
   save(): void {
     this.submitting = true;
-    this.expenseService.upsertExpense(this.expenseForm.value).subscribe({
-      next: () => {
-        this.toastService.displaySuccessToast('Expense saved');
-        this.modalCtrl.dismiss(null, 'refresh');
-        this.submitting = false;
+    this.expenseService
+      .upsertExpense({ ...this.expenseForm.value, date: format(parseISO(this.expenseForm.value.date), 'yyyy-MM-dd')})
+      .subscribe({
+        next: () => {
+          this.toastService.displaySuccessToast('Expense saved');
+          this.modalCtrl.dismiss(null, 'refresh');
+          this.submitting = false;
       },
       error: (error) => {
         this.toastService.displayErrorToast('Could not save Expense', error);
