@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ActionSheetService } from '../../shared/service/action-sheet.service';
 import {filter, from, mergeMap} from 'rxjs';
@@ -11,7 +11,10 @@ import {ToastService} from "../../shared/service/toast.service";
   selector: 'app-category-modal',
   templateUrl: './category-modal.component.html',
 })
-export class CategoryModalComponent {
+export class CategoryModalComponent implements OnInit {
+  ngOnInit(): void {
+    this.categoryForm.patchValue(this.category);
+  }
   // Passed into the component by the ModalController, available in the ngOnInit
   category: Category = {} as Category;
 

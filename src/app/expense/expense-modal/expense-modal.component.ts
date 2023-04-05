@@ -10,7 +10,7 @@ import { ToastService} from "../../shared/service/toast.service";
 import { ExpenseService} from "../expense.service";
 import { format, formatISO, parseISO } from 'date-fns';
 import { ca } from 'date-fns/locale';
-import {save} from "ionicons/icons";
+import { save } from "ionicons/icons";
 
 
 @Component({
@@ -19,8 +19,11 @@ import {save} from "ionicons/icons";
 })
 export class ExpenseModalComponent implements OnInit{
   categories: Category[] = [];
-  expenses: Expense = {} as Expense;
+  expense: Expense = {} as Expense;
   ngOnInit(): void {
+    const { id, amount, category, date, name } = this.expense;
+    if (category) this.categories.push(category);
+    if (id) this.expenseForm.patchValue({ id, amount, categoryId: category?.id, date, name });
     this.loadAllCategories();
   }
 

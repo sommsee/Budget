@@ -7,6 +7,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Expense</ion-title>
+    <ion-progress-bar *ngIf="loading" type="indeterminate"></ion-progress-bar>
   </ion-toolbar>
 </ion-header>
 
@@ -46,20 +47,40 @@
   </ion-grid>
 
   <!-- Expense list -->
-  <ion-list inset="true">
-     <ion-item button="true" [detail]="true" (click)="openModal()">
+  <ion-list [ngSwitch]="expenseGroups?.length" inset="true">
+    <ng-container *ngSwitchCase="null">
+     <ion-item *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]">
+      <ion-label>
+          <ion-skeleton-text [animated]="true" style="width: 100px"></ion-skeleton-text>
+      </ion-label>
+     </ion-item>
+    </ng-container>
+    <ion-item *ngSwitchCase="0">
+      <ion-icon slot="start" name="alert-circle-inline"></ion-icon>
+      <ion-label>Keine Expenses gefunden</ion-label>
+    </ion-item>
+<ng-container *ngSwitchDefault>
+  <ion-item-group *ngFor="let expenseGroup of expenseGroups">
+    <ion-item-divider>
+      <ion-label>{{expenseGroup.date | date:'dd.MM.yyyy'}}</ion-label>
+    </ion-item-divider>
+    <ion-item *ngFor="let expense of expenseGroup.expenses" [detail]="true" [disabled]="loading" (click)="openModal(expense)" button="true">
       <ion-label>
         <ion-grid>
           <ion-row>
-            <ion-col>Test</ion-col>
-            <ion-col name="arrow-back-outline">20min</ion-col>
-            <ion-col>CHF 59.00</ion-col>
+            <ion-col>{{expense.name}}</ion-col>
+            <ion-col class="ion-text-left">
+              <ion-icon name="pricetag"></ion-icon>
+              {{expense.category?.name}}
+            </ion-col>
+            <ion-col class="ion-text-end">{{expense.amount | currency:'CHF'}}</ion-col>
           </ion-row>
         </ion-grid>
       </ion-label>
     </ion-item>
-  </ion-list>
-
+  </ion-item-group>
+</ng-container>
+</ion-list>
   <!-- Create fab button -->
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="openModal()">

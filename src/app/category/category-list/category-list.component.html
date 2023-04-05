@@ -55,8 +55,7 @@
     </ion-item>
     <!-- Categories -->
     <ng-container *ngSwitchDefault>
-      <ion-item button="true" *ngFor="let category of categories" [detail]="true" [disabled]="loading"
-                (click)="openModal(category)">
+      <ion-item button="true" *ngFor="let category of categories" [detail]="true" [disabled]="loading" (click)="openModal(category)">
         <ion-label>
           {{category.name}}
         </ion-label>

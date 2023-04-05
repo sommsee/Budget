@@ -26,8 +26,7 @@
 <ion-content class="ion-padding" [formGroup]="categoryForm">
   <ion-item>
     <ion-icon name="text" slot="start"></ion-icon>
-    <ion-input maxlength="40" placeholder="Enter the category's name" required formControlName="name"
-               [disabled]="submitting"></ion-input>
+    <ion-input maxlength="40" placeholder="Enter the category's name" required formControlName="name" [disabled]="submitting"></ion-input>
   </ion-item>
   <ion-fab *ngIf="category.id" slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="delete()" color="danger" [disabled]="submitting">
