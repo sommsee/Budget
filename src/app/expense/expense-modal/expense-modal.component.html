@@ -12,8 +12,7 @@
     </ion-buttons>
     <ion-title>Edit Expense</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="save()" [disabled]="expenseForm.pristine || expenseForm.invalid || submitting">
-
+      <ion-button (click)='save()' [disabled]='expenseForm.pristine || expenseForm.invalid || submitting'>
         <ion-icon slot="end" name="save"></ion-icon>
         Save
       </ion-button>
@@ -27,14 +26,13 @@
 <ion-content class="ion-padding" [formGroup]="expenseForm">
   <ion-item>
     <ion-icon name="text" slot="start"></ion-icon>
-    <ion-input maxlength="40" placeholder="Enter the Expense's name" required formControlName="name"
-               [disabled]="submitting"></ion-input>
+    <ion-input maxlength="40" placeholder="Wähle einen ExpenseName" required formControlName="name" [disabled]="submitting"></ion-input>
   </ion-item>
   <ion-item>
     <ion-icon name="pricetag-outline" slot="start"></ion-icon>
     <ion-input maxlength="40" required formControlName="name">
-      <ion-select placeholder='Choose a category'>
-        <ion-select-option *ngFor='let category of categories' [value]='category.id' formControlName='categoryId'>
+      <ion-select interface='popover'  placeholder='Wähle eine Kategorie' formControlName='categoryId'>
+        <ion-select-option role='option' *ngFor='let category of categories' [value]='category.id'>
           {{category.name}}
         </ion-select-option>
       </ion-select>
@@ -45,15 +43,15 @@
   </ion-item>
   <ion-item>
     <ion-icon slot='start' name='cash'></ion-icon>
-    <ion-input type='number' inputmode='decimal' placeholder='Enter the amount in CHF' step='0.01' formControlName='amount'></ion-input>
+    <ion-input type='number' inputmode='decimal' placeholder='Preis eingeben' step='0.01' formControlName='amount'></ion-input>
     <ion-note slot='end'>CHF</ion-note>
   </ion-item>
   <ion-item>
     <ion-icon slot='start' name='calendar'></ion-icon>
-    <ion-datetime-button datetime='datetime' formcontrolName='date'></ion-datetime-button>
+    <ion-datetime-button datetime='datetime'></ion-datetime-button>
     <ion-modal [keepContentsMounted]='true'>
       <ng-template>
-        <ion-datetime presentation='date' id='datetime'></ion-datetime>
+        <ion-datetime presentation='date' id='datetime' formControlName='date'></ion-datetime>
       </ng-template>
     </ion-modal>
   </ion-item>
