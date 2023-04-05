@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import {BehaviorSubject,filter, from, mergeMap} from 'rxjs';
+import { BehaviorSubject,filter, from, mergeMap} from 'rxjs';
 import { CategoryModalComponent } from '../../category/category-modal/category-modal.component';
 import { ActionSheetService } from '../../shared/service/action-sheet.service';
-import {Category, Expense} from "../../shared/domain";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {CategoryService} from "../../category/category.service";
-import {ToastService} from "../../shared/service/toast.service";
-import {ExpenseService} from "../expense.service";
+import { Category, Expense} from "../../shared/domain";
+import { FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { CategoryService} from "../../category/category.service";
+import { ToastService} from "../../shared/service/toast.service";
+import { ExpenseService} from "../expense.service";
+import { format, formatISO, parseISO } from 'date-fns';
+import { ca } from 'date-fns/locale';
 import {save} from "ionicons/icons";
 
 
@@ -15,9 +17,12 @@ import {save} from "ionicons/icons";
   selector: 'app-expense-modal',
   templateUrl: './expense-modal.component.html',
 })
-export class ExpenseModalComponent {
+export class ExpenseModalComponent implements OnInit{
   categories: Category[] = [];
   expenses: Expense = {} as Expense;
+  ngOnInit(): void {
+    this.loadAllCategories();
+  }
 
 
   constructor(
