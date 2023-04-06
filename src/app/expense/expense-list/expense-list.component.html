@@ -31,8 +31,10 @@
       <ion-col size="8" size-sm="4">
         <ion-item>
           <ion-icon name="bookmark-outline" slot="start"></ion-icon>
-          <ion-select interface="popover" value="Expense">
-            <ion-select-option>Category</ion-select-option>
+          <ion-select placeholder="Kategorie" interface="popover" formControlName="categoryIds" multiple="true">
+            <ion-select-option role="option" *ngFor="let category of categories" [value]="category.id">
+              {{category.name}}
+            </ion-select-option>
           </ion-select>
         </ion-item>
       </ion-col>
@@ -68,7 +70,7 @@
         <ion-grid>
           <ion-row>
             <ion-col>{{expense.name}}</ion-col>
-            <ion-col class="ion-text-left">
+            <ion-col class="ion-text-center">
               <ion-icon name="pricetag"></ion-icon>
               {{expense.category?.name}}
             </ion-col>

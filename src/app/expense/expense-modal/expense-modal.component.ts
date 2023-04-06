@@ -18,14 +18,14 @@ import { save } from "ionicons/icons";
   templateUrl: './expense-modal.component.html',
 })
 export class ExpenseModalComponent implements OnInit{
-  categories: Category[] = [];
-  expense: Expense = {} as Expense;
   ngOnInit(): void {
     const { id, amount, category, date, name } = this.expense;
     if (category) this.categories.push(category);
     if (id) this.expenseForm.patchValue({ id, amount, categoryId: category?.id, date, name });
     this.loadAllCategories();
   }
+  categories: Category[] = [];
+  expense: Expense = {} as Expense;
 
 
   constructor(
@@ -38,18 +38,11 @@ export class ExpenseModalComponent implements OnInit{
   ) {
     this.expenseForm = this.formBuilder.group({
       id: [], // hidden
+      categoryId: [],
       name: ['', [Validators.required, Validators.maxLength(40)]],
       amount: [],
       date: [formatISO(new Date())],
     });
-  }
-
-  async showCategoryModal(): Promise<void> {
-    const categoryModal = await this.modalCtrl.create({component: CategoryModalComponent});
-    await categoryModal.present();
-    const {role} = await categoryModal.onWillDismiss();
-    if (role === 'refresh') this.loadAllCategories();
-    console.log('role', role);
   }
 
   readonly expenseForm: FormGroup;
@@ -109,4 +102,12 @@ export class ExpenseModalComponent implements OnInit{
       },
     });
   }
+  async showCategoryModal(): Promise<void> {
+    const categoryModal = await this.modalCtrl.create({component: CategoryModalComponent});
+    categoryModal.present();
+    const { role } = await categoryModal.onWillDismiss();
+    if (role === 'refresh') this.loadAllCategories();
+    console.log('role', role);
+  }
+
 }
