@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import { addMonths, set } from 'date-fns';
-import { ModalController } from '@ionic/angular';
+import {InfiniteScrollCustomEvent, ModalController, RefresherCustomEvent} from '@ionic/angular';
 import { ExpenseModalComponent } from '../expense-modal/expense-modal.component';
 import {Category, Expense, ExpenseCriteria, SortOption} from '../../shared/domain';
 import {FormBuilder, FormGroup} from "@angular/forms";
@@ -39,7 +39,14 @@ export class ExpenseListComponent implements OnInit{
   ];
 
   private readonly unsubscribe = new Subject<void>();
-
+  loadNextExpensesPage($event: any) {
+    this.searchCriteria.page++;
+    this.loadExpenses(() => ($event as InfiniteScrollCustomEvent).target.complete());
+  }
+  reloadExpenses($event?: any): void {
+    this.searchCriteria.page = 0;
+    this.loadExpenses(() => ($event ? ($event as RefresherCustomEvent).target.complete() : {}));
+  }
   constructor(
     private readonly modalCtrl: ModalController,
     private readonly toastService: ToastService,
@@ -70,7 +77,7 @@ export class ExpenseListComponent implements OnInit{
     });
     modal.present();
     const {role} = await modal.onWillDismiss();
-    console.log('role', role);
+     if (role === 'refresh') this.reloadExpenses();
   }
 
   private loadAllCategories(): void {
