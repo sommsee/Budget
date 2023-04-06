@@ -58,7 +58,27 @@ export class ExpenseModalComponent implements OnInit{
   cancel(): void {
     this.modalCtrl.dismiss(null, 'cancel');
   }
-
+  delete(): void {
+    from(this.actionSheetService.showDeletionConfirmation('Are you sure you want to delete this category?'))
+      .pipe(
+        filter((action) => action === 'delete'),
+        mergeMap(() => {
+          this.submitting = true;
+          return this.expenseService.deleteExpense(this.expense.id!);
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.toastService.displaySuccessToast('Category deleted');
+          this.modalCtrl.dismiss(null, 'refresh');
+          this.submitting = false;
+        },
+        error: (error) => {
+          this.toastService.displayErrorToast('Could not delete category', error);
+          this.submitting = false;
+        },
+      });
+  }
   private loadAllCategories(): void {
     const pageToLoad = new BehaviorSubject(0);
     pageToLoad
@@ -88,11 +108,5 @@ export class ExpenseModalComponent implements OnInit{
         this.submitting = false;
       },
     });
-  }
-
-  delete(): void {
-    from(this.actionSheetService.showDeletionConfirmation('Are you sure you want to delete this expense?'))
-      .pipe(filter((action) => action === 'delete'))
-      .subscribe(() => this.modalCtrl.dismiss(null, 'delete'));
   }
 }
