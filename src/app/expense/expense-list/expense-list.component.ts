@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { addMonths, set } from 'date-fns';
 import {InfiniteScrollCustomEvent, ModalController, RefresherCustomEvent} from '@ionic/angular';
 import { ExpenseModalComponent } from '../expense-modal/expense-modal.component';
@@ -19,7 +19,7 @@ interface ExpenseGroup {
   selector: 'app-expense-overview',
   templateUrl: './expense-list.component.html',
 })
-export class ExpenseListComponent implements OnInit{
+export class ExpenseListComponent implements OnInit, OnDestroy {
   date = set(new Date(), {date: 1});
   loading = false;
   expenseGroups: ExpenseGroup[] | null = null;
@@ -43,10 +43,6 @@ export class ExpenseListComponent implements OnInit{
     this.searchCriteria.page++;
     this.loadExpenses(() => ($event as InfiniteScrollCustomEvent).target.complete());
   }
-  reloadExpenses($event?: any): void {
-    this.searchCriteria.page = 0;
-    this.loadExpenses(() => ($event ? ($event as RefresherCustomEvent).target.complete() : {}));
-  }
   constructor(
     private readonly modalCtrl: ModalController,
     private readonly toastService: ToastService,
@@ -68,6 +64,7 @@ export class ExpenseListComponent implements OnInit{
 
   addMonths = (number: number): void => {
     this.date = addMonths(this.date, number);
+    this.reloadExpenses();
   };
 
   async openModal(expense?: Expense): Promise<void> {
@@ -138,5 +135,17 @@ private sortExpenses = (expenses: Expense[]): Expense[] => expenses.sort((a, b) 
   ngOnInit(): void {
     this.loadExpenses();
     this.loadAllCategories();
+  }
+  ngOnDestroy(): void {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+  }
+  loadNextExpensePage($event: any) {
+    this.searchCriteria.page++;
+    this.loadExpenses(() => ($event as InfiniteScrollCustomEvent).target.complete());
+  }
+  reloadExpenses($event?: any): void {
+    this.searchCriteria.page = 0;
+    this.loadExpenses(() => ($event ? ($event as RefresherCustomEvent).target.complete() : {}));
   }
 }
